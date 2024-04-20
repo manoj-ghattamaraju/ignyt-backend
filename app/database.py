@@ -43,6 +43,4 @@ def get_db_connection():
     conn = create_connection()
     create_tables(conn)
     return conn
-
-if __name__ == "__main__":
-    get_db_connection()
+    

@@ -1,10 +1,13 @@
 from flask import Flask, jsonify, request
+from database import get_db_connection
 import sqlite3
 
 app = Flask(__name__)
 
+get_db_connection()
+
 # Function to establish a connection to the database
-def get_db_connection():
+def db_connection():
     conn = sqlite3.connect('ignyt.db')
     conn.row_factory = sqlite3.Row
     return conn
@@ -22,7 +25,7 @@ def get_next_reservation_id(cursor):
 # API endpoint to add a new reservation
 @app.route('/reserve', methods=['POST'])
 def add_reservation():
-    db = get_db_connection()
+    db = db_connection()
     cursor = db.cursor()
 
     data = request.get_json()
