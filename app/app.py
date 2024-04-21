@@ -31,22 +31,28 @@ def add_reservation():
 
     data = request.get_json()
 
-    cust_id = get_next_customer_id(cursor)
+    try: 
+        cust_id = get_next_customer_id(cursor)
 
-    # Add new customer to Customer table
-    cursor.execute('INSERT INTO Customer (cust_id, cust_name, cust_phone, cust_mail_id) VALUES (?, ?, ?, ?)',
-                   (cust_id, data['cust_name'], data['cust_phone'], data['cust_mail_id']))
+        # Add new customer to Customer table
+        cursor.execute('INSERT INTO Customer (cust_id, cust_name, cust_phone, cust_mail_id) VALUES (?, ?, ?, ?)',
+                        (cust_id, data['cust_name'], data['cust_phone'], data['cust_mail_id']))
 
-    reserve_id = get_next_reservation_id(cursor)
+        reserve_id = get_next_reservation_id(cursor)
 
-    # Add new reservation to Reservation table
-    cursor.execute('INSERT INTO Reservation (reserve_id, cust_id, no_of_ppl, date, time) VALUES (?, ?, ?, ?, ?)',
-                   (reserve_id, cust_id, data['no_of_ppl'], data['date'], data['time']))
+        # Add new reservation to Reservation table
+        cursor.execute('INSERT INTO Reservation (reserve_id, cust_id, no_of_ppl, date, time, message) VALUES (?, ?, ?, ?, ?, ?)',
+                        (reserve_id, cust_id, data['no_of_ppl'], data['date'], data['time'], data['message']))
 
-    db.commit()
-    db.close()
+        db.commit()
+        db.close()
 
-    return jsonify({'message': 'Reservation added successfully'})
+        return jsonify({'message': 'Reservation added successfully', 'statusCode': 'S'})
+
+    except Exception:
+        db.rollback()
+        db.close()
+        return jsonify({'message': 'Failed to add reservation', 'statusCode': 'F'})
 
 @app.route('/restaurant', methods=['GET'])
 def get_restaurant_details():
