@@ -22,6 +22,7 @@ def create_tables(conn):
             no_of_ppl INTEGER,
             date DATE,
             time TIME,
+            message TEXT,
             FOREIGN KEY (cust_id) REFERENCES Customer(cust_id)
         )
     ''')
@@ -71,4 +72,4 @@ def get_db_connection():
         insert_into_restaurant(conn)
     conn.close()
     return conn
-    
+
