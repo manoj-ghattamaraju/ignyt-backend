@@ -66,7 +66,7 @@ def get_restaurant_details():
     return json.dumps(data)
 
 @app.route('/get-reservations', methods=['GET'])
-def get_restaurant_details():
+def get_reservation_details():
     db = db_connection()
     cursor = db.cursor()
 
