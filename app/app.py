@@ -65,5 +65,14 @@ def get_restaurant_details():
     data = [dict(row) for row in details]
     return json.dumps(data)
 
+@app.route('/get-reservations', methods=['GET'])
+def get_restaurant_details():
+    db = db_connection()
+    cursor = db.cursor()
+
+    details = cursor.execute('SELECT * FROM Reservation')
+    data = [dict(row) for row in details]
+    return json.dumps(data)
+
 if __name__ == '__main__':
     app.run(debug=True)
